@@ -1,0 +1,33 @@
+const handleDownload = async (fileId) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/api/file/download/${fileId}`, {
+                responseType: 'blob',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            // Debug: Check response
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+    
+            if (response.status === 200) {
+                // Create a blob URL and trigger the download
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'masked_image.jpg');  // Set the filename here
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            } else {
+                console.error('Unexpected response status:', response.status);
+                alert('Error downloading file: Unexpected response status');
+            }
+        } catch (error) {
+            // Debug: Check error response
+            console.error('Error details:', error.response?.data || error.message);
+            alert('Error downloading file: ' + (error.response?.data?.message || 'Unknown error'));
+        }
+    };
+    

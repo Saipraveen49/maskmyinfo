@@ -1,0 +1,60 @@
+/* Footer.css */
+.footer {
+    color: #d9d9d9;
+  background-color: rgb(32, 36, 39);/* Light gray background for the footer */
+  padding: 20px 0;           /* Top and bottom padding */
+  text-align: center;         /* Center-align the text */
+  position: relative;         /* Position relative for absolute positioning */
+    margin-top: 25px;
+    font-family: "Reddit Sans Condensed", sans-serif;
+}
+
+.footer-main {
+  display: flex;              /* Use flexbox for horizontal layout */
+  justify-content: space-around; /* Space out children horizontally */
+  align-items: flex-start;    /* Align items at the top */
+  margin-bottom: 20px;        /* Space between main content and copyright */
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;                    /* Equally distribute space among sections */
+  padding: 0 10px;            /* Side padding for spacing */
+}
+
+.footer-left img {
+  max-width: 150px;
+  border-radius: 150px;           /* Set a max width for the logo */
+}
+
+.footer-center ul,
+.footer-right ul {
+  list-style-type: none;      /* Remove default list styling */
+  padding: 0;                 /* Remove padding */
+  margin: 0;                  /* Remove margin */
+}
+
+.footer-center ul li,
+.footer-right ul li {
+  margin-bottom: 10px;        /* Space between list items */
+  cursor: pointer;            /* Pointer cursor on hover */
+}
+
+.footer-center h2,
+.footer-right h2 {
+  margin-bottom: 15px;        /* Space between the heading and list */
+  font-size: 18px;            /* Font size for headings */
+}
+
+hr {
+  margin: 20px 0;             /* Space around the horizontal rule */
+  border: none;               /* Remove default border */
+  border-top: 1px solid #ccc; /* Custom light gray border */
+}
+
+.footer-copyright {
+  text-align: center;         /* Center-align the text */
+  font-size: 14px;            /* Smaller font size for copyright text */
+  margin-bottom: 10px;        /* Bottom margin */
+}

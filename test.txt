@@ -1,0 +1,403 @@
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import './UploadSection.css';
+
+const UploadSection = () => {
+    const dropAreaRef = useRef(null);
+    const fileInputRef = useRef(null);
+    const [fileName, setFileName] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [files, setFiles] = useState([]);
+
+    const fetchFiles = async () => {
+        try {
+            const response = await axios.get('http://localhost:4000/api/file/my-files', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setFiles(response.data.files); // Update the file list
+        } catch (error) {
+            console.error('Error fetching files:', error);
+        }
+    };
+
+    // Fetch files initially and set up polling
+    useEffect(() => {
+        fetchFiles();
+
+        const intervalId = setInterval(() => {
+            fetchFiles(); // Periodically fetch files to update the list
+        }, 1000);
+        return () => clearInterval(intervalId); // Clear interval on component unmount
+    }, []);
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        dropAreaRef.current.style.backgroundColor = '#e6e9f0';
+    };
+
+    const handleDragLeave = () => {
+        dropAreaRef.current.style.backgroundColor = '#f3f4f6';
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        dropAreaRef.current.style.backgroundColor = '#f3f4f6';
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            setFileName(files[0].name);
+            setSelectedFile(files[0]);
+        }
+    };
+
+    const handleFileInputChange = (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            setFileName(files[0].name);
+            setSelectedFile(files[0]);
+        }
+    };
+
+    const handleUpload = async () => {
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                await axios.post('http://localhost:4000/api/file/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                alert('File uploaded successfully');
+                setFileName(''); // Clear selected file name
+                setSelectedFile(null); // Clear selected file
+                fetchFiles(); // Refresh the file list
+            } catch (error) {
+                console.error('Error uploading file:', error.response?.data || error.message);
+                alert('Error uploading file');
+            }
+        } else {
+            alert('No file selected');
+        }
+    };
+
+    const handleDownload = async (fileId) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/api/file/download/${fileId}`, {
+                responseType: 'blob',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            // Debug: Check response
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+
+            if (response.status === 200) {
+                // Extract filename from Content-Disposition header
+                const contentDisposition = response.headers['content-disposition'];
+                let fileName = 'downloaded_file';
+
+                if (contentDisposition) {
+                    const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+                    if (fileNameMatch.length > 1) {
+                        fileName = fileNameMatch[1];
+                    }
+                } else {
+                    // Fallback if Content-Disposition header is not provided
+                    const fileExtension = response.data.type.split('/').pop();
+                    fileName = `downloaded_file.${fileExtension}`;
+                }
+
+                // Create a blob URL and trigger the download
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            } else {
+                console.error('Unexpected response status:', response.status);
+                alert('Error downloading file: Unexpected response status');
+            }
+        } catch (error) {
+            // Debug: Check error response
+            console.error('Error details:', error.response?.data || error.message);
+            alert('Error downloading file: ' + (error.response?.data?.message || 'Unknown error'));
+        }
+    };
+    const handleDelete = async (fileId) => {
+        try {
+            const response = await axios.delete(`http://localhost:4000/api/file/delete/${fileId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            alert('File deleted successfully');
+            setFiles(response.data.files); // Update the file list directly with the response
+    
+        } catch (error) {
+            console.error('Error deleting file:', error.response?.data || error.message);
+            alert('Error deleting file');
+        }
+    };
+    
+
+    return (
+        <div id='upload-section'>
+            <div className="upload-section">
+                <div className="title">
+                    <h2>Mask Your Various Documents</h2>
+                    <p>Mask document-Online for FREE</p>
+                </div>
+                <div
+                    className="upload-area"
+                    ref={dropAreaRef}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
+                    <input
+                        type="file"
+                        id="file-upload"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileInputChange}
+                    />
+                    <label
+                        htmlFor="file-upload"
+                        className="upload-button"
+                        onClick={() => fileInputRef.current.click()}
+                    >
+                        Upload File
+                    </label>
+                    <div className="drop-area" onClick={() => fileInputRef.current.click()}>
+                        <p>{fileName ? `Selected file: ${fileName}` : 'Drag & drop files here or click to upload'}</p>
+                    </div>
+                    <button className='submitButton' onClick={handleUpload}>Submit</button>
+                </div>
+            </div>
+
+            <div className="file-list">
+                <h2>File Repository</h2>
+                <ul>
+                    {files.map(file => (
+                        <li key={file._id}>
+                            <div className="name">
+                                {file.fileName}
+                            </div>
+                            <div className="buttons">
+                                <button onClick={() => handleDownload(file._id)}>Download Masked</button>
+                                <button onClick={() => handleDelete(file._id)}>Delete</button>
+                            </div>
+
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+};
+
+export default UploadSection;
+
+
+
+
+
+---------------------------------
+import fileModel from "../models/fileModel.js";
+import crypto from "crypto";
+import dotenv from "dotenv";
+import userModel from "../models/userModel.js";
+import path from 'path';
+import fs from 'fs';
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Use the environment variables for encryption key and IV
+const encryptionKey = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+const iv = Buffer.from(process.env.IV, 'hex');
+
+const addFile = async (req, res) => {
+    try {
+        const file = req.file;
+        const userId = req.userId; // Assumes userId is set by auth middleware
+
+        // Check if the file is uploaded
+        if (!file) {
+            return res.status(400).json({ success: false, message: "No file uploaded" });
+        }
+
+        // Encrypt the file data
+        const cipher = crypto.createCipheriv('aes-256-cbc', encryptionKey, iv);
+        let encryptedData = cipher.update(file.buffer, 'binary', 'hex');
+        encryptedData += cipher.final('hex');
+
+        // Create a new file document
+        const newFile = new fileModel({
+            fileName: file.originalname,
+            fileType: file.mimetype,
+            fileSize: file.size,
+            fileData: encryptedData,
+            iv: iv.toString('hex'), // Save the IV to use during decryption
+            user: userId
+        });
+
+        // Save the file document
+        const savedFile = await newFile.save();
+
+        // Update user document to include the file reference
+        await userModel.findByIdAndUpdate(userId, { $push: { files: savedFile._id } });
+
+        res.json({ success: true, message: "Document added successfully", file: savedFile });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ success: false, message: "Error adding document" });
+    }
+};
+
+const getUserFiles = async (req, res) => {
+    try {
+        const userId = req.userId; // Assumes userId is set by auth middleware
+
+        // Find user and populate files
+        const user = await userModel.findById(userId).populate('files');
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.json({ success: true, files: user.files });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ success: false, message: "Error retrieving files" });
+    }
+};
+
+const getFile = async (req, res) => {
+    try {
+        const fileId = req.params.fileId; // Assume file ID is passed as a URL parameter
+
+        // Find the file in the database
+        const file = await fileModel.findById(fileId);
+
+        if (!file) {
+            return res.status(404).json({ success: false, message: "File not found" });
+        }
+
+        // Decrypt the file data
+        const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, Buffer.from(file.iv, 'hex'));
+        let decryptedData = decipher.update(file.fileData, 'hex', 'binary');
+        decryptedData += decipher.final('binary');
+
+        // Send the decrypted file data back to the client
+        res.setHeader('Content-Type', file.fileType);
+        res.send(decryptedData);
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ success: false, message: "Error retrieving file" });
+    }
+};
+
+const downloadFile = async (req, res) => {
+    try {
+        const fileId = req.params.fileId;
+        const file = await fileModel.findById(fileId);
+
+        if (!file) {
+            return res.status(404).json({ success: false, message: "File not found" });
+        }
+
+        const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, Buffer.from(file.iv, 'hex'));
+        let decryptedData = decipher.update(file.fileData, 'hex', 'binary');
+        decryptedData += decipher.final('binary');
+
+        const tempDirPath = path.join(__dirname, 'temp');
+        const tempFilePath = path.join(tempDirPath, file.fileName);
+        const maskedFilePath = path.join(tempDirPath, `masked_${file.fileName}`);
+
+        if (!fs.existsSync(tempDirPath)) {
+            fs.mkdirSync(tempDirPath);
+        }
+
+        fs.writeFileSync(tempFilePath, decryptedData, 'binary');
+
+        const pythonScriptPath = path.join(__dirname, 'mask_pii.py');
+        const pythonProcess = spawn('python', [pythonScriptPath, tempFilePath, maskedFilePath]);
+
+        pythonProcess.stdout.on('data', (data) => {
+            console.log(`Python script output: ${data.toString()}`);
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            console.error(`Python script error: ${data.toString()}`);
+        });
+
+        pythonProcess.on('close', (code) => {
+            if (code !== 0) {
+                console.error(`Python script failed with exit code ${code}`);
+                return res.status(500).json({ success: false, message: 'Error processing file with Python script' });
+            }
+
+            if (fs.existsSync(maskedFilePath)) {
+                res.download(maskedFilePath, file.fileName, (err) => {
+                    if (err) {
+                        console.error("Error sending file:", err);
+                        return res.status(500).json({ success: false, message: "Error sending file" });
+                    }
+
+                    fs.unlinkSync(tempFilePath);
+                    fs.unlinkSync(maskedFilePath);
+                });
+            } else {
+                console.error("Masked file does not exist");
+                res.status(500).json({ success: false, message: "Masked file not found" });
+            }
+        });
+
+        pythonProcess.on('error', (err) => {
+            console.error("Error executing Python script:", err);
+            res.status(500).json({ success: false, message: "Error executing Python script" });
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ success: false, message: "Error retrieving file" });
+    }
+};
+
+const deleteFile = async (req, res) => {
+    try {
+        const fileId = req.params.fileId;
+        const file = await fileModel.findById(fileId);
+
+        if (!file) {
+            return res.status(404).json({ success: false, message: "File not found" });
+        }
+
+        // Remove the file from the user’s file list and delete the file
+        await userModel.findByIdAndUpdate(file.user, { $pull: { files: fileId } });
+        await fileModel.findByIdAndDelete(fileId);
+
+        // Fetch updated file list and return it directly
+        const user = await userModel.findById(file.user).populate('files');
+        res.json({ success: true, message: "File deleted successfully", files: user.files });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ success: false, message: "Error deleting file" });
+    }
+};
+
+
+
+export { addFile, getUserFiles, downloadFile,deleteFile };

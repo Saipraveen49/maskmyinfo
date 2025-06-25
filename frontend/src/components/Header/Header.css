@@ -1,0 +1,61 @@
+.header {
+    height: 34vw;
+    margin: 10px auto;
+    background: url('../../assets/background_header.jpg') no-repeat;
+    background-size: cover;  /* Changed to cover for better background scaling */
+    position: relative;
+    display: flex;
+    justify-content: center;  /* Horizontally center child elements */
+    align-items: center;  
+    font-family: "Reddit Sans Condensed", sans-serif;    /* Vertically center child elements */
+}
+
+.header-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5vw;
+    max-width: 50%;
+    text-align: center;       /* Center text inside the header-contents */
+    animation: fadeIn 3s;
+}
+
+.header-contents h2 {
+    font-weight: 500;
+    color: black;
+    font-size: max(4.5vw, 22px);
+}
+
+.header-contents p {
+    color: black;
+    font-size: 1vw;
+}
+
+.header-contents button {
+    border: none;
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    padding: 1vw 2.3vw;
+    font-size: max(1vw, 13px);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+@media (max-width: 1050px) {
+    .header-contents {
+        max-width: 45%;
+    }
+}
+
+@media (max-width: 750px) {
+    .header-contents {
+        max-width: 65%;
+    }
+    .header-contents p {
+        display: none;
+    }
+    .header-contents button {
+        padding: 2vw 4vw;
+    }
+}

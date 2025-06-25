@@ -1,0 +1,28 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+.scroll-to-top {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed position */
+  bottom: 20px; /* 20px from the bottom */
+  right: 30px; /* 30px from the right */
+  z-index: 99; /* Ensure it stays on top */
+  border: none; /* No border */
+  outline: none; /* No outline */
+  background-color: #555; /* Button background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Pointer/hand icon */
+  padding: 15px; /* Padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 24px; /* Adjusted font size for icon */
+  opacity: 0.7; /* Slight transparency */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.scroll-to-top:hover {
+  background-color: #000; /* Darker background on hover */
+  opacity: 1; /* Full opacity on hover */
+}
+
+.scroll-to-top.show {
+  display: block; /* Show the button when visible */
+}

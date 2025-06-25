@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin-top: 80px; /* To account for fixed navbar */
+}
+
+/* Navbar styling */
+.navbar {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Add a subtle shadow */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.navbar-left h2 {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+/* Navbar items */
+.navbar-items ul {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.navbar-items ul a {
+    text-decoration: none;
+    color: #555;
+    padding: 10px;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar-items ul a:hover, 
+.navbar-items ul .active-nav {
+    color: #1E90FF;
+    border-bottom: 3px solid #1E90FF;
+}
+
+/* Sign In Button */
+.navbar-right button {
+    background-color: #1E90FF;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-right button:hover {
+    background-color: #187bcd;
+}
+
+/* Profile Dropdown */
+.navbar-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navbar-profile img {
+    width: 50px; /* Reduced size */
+    height: 45px; /* Ensure aspect ratio stays correct */
+    border-radius: 50%;
+}
+
+.nav-profile-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    list-style: none;
+    width: 150px;
+    z-index: 1001;
+}
+
+.navbar-profile:hover .nav-profile-dropdown {
+    display: flex;
+}
+
+.nav-profile-dropdown li {
+    padding: 10px 15px;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+    transition: background-color 0.3s ease;
+}
+
+.nav-profile-dropdown li:hover {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.nav-profile-dropdown img {
+    width: 20px;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 900px) {
+    .navbar-items ul {
+        gap: 20px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 750px) {
+    .navbar-items ul {
+        display: none; /* Hide navbar items on smaller screens */
+    }
+    
+    .navbar-right {
+        margin-left: 0;
+    }
+}

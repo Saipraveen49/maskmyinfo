@@ -1,0 +1,360 @@
+
+.upload-section {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 100px 50px;
+    background: linear-gradient(135deg, rgba(0, 36, 107, 0.9), rgba(202, 220, 252, 0.9));
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Reddit Sans Condensed", sans-serif;
+}
+
+.upload-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.title h2 {
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 50px;
+}
+
+.title p {
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 200px;
+    background-color: #2f51e7a9;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 30px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+.drop-area {
+    font-size: 20px;
+    padding: 20px;
+    border: 2px dashed #999;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    transition: background-color 0.3s ease;
+}
+
+.submitButton {
+    margin-top: 20px;
+    width: 100px;
+    padding: 5px;
+    border: none;
+    border-radius: 20px;
+    background-color: tomato;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    width: 120px;
+    height: 30px;
+}
+
+.file-list {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    margin: 30px auto;
+    text-align: center;
+    font-family: "Reddit Sans Condensed", sans-serif;
+}
+
+.file-list h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.file-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-list ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.file-list ul li:hover {
+    background-color: #e9ecef;
+}
+
+.file-list ul .name {
+    flex-grow: 1;
+    color: #555;
+    text-align: left;
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+.file-list ul .buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.file-list ul button {
+    border: none;
+    padding: 8px 12px;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.download {
+    background-color: #28a745;
+}
+
+.download:hover {
+    background-color: #218838;
+}
+
+.delete {
+    background-color: #dc3545;
+}
+
+.delete:hover {
+    background-color: #c82333;
+}
+.recognize{
+    background-color: tomato;
+}
+.recognize:hover{
+    background-color:orangered;
+}
+.sensitive-data-selection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 5px;
+}
+.sensitive-data-selection button{
+    color: white;
+    background-color: #0056b3;
+    border: none;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.sensitive-data-selection button:hover{
+    background-color: #032d5a;
+}
+@media (max-width: 1200px) {
+    .upload-section {
+        padding: 80px 40px;
+    }
+
+    .title h2 {
+        font-size: 2.5rem;
+    }
+
+    .title p {
+        font-size: 0.875rem;
+    }
+
+    .upload-button {
+        width: 180px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .upload-section {
+        padding: 60px 20px;
+    }
+
+    .title h2 {
+        font-size: 2rem;
+    }
+
+    .title p {
+        font-size: 0.75rem;
+    }
+
+    .upload-button {
+        width: 160px;
+        font-size: 1rem;
+    }
+
+    .file-list {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .upload-section {
+        padding: 40px 10px;
+    }
+
+    .title h2 {
+        font-size: 1.5rem;
+    }
+
+    .title p {
+        font-size: 0.625rem;
+    }
+
+    .upload-button {
+        width: 140px;
+        font-size: 0.875rem;
+    }
+
+    .drop-area {
+        font-size: 1rem;
+    }
+
+    .file-list {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .file-list ul li {
+        font-size: 16px;
+        gap: 20px;
+    }
+
+    .file-list ul button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+.sensitive-data-selection {
+    background-color: #f9fafc;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: "Reddit Sans Condensed", sans-serif;
+}
+
+.sensitive-data-selection h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 22px;
+    text-align: center;
+}
+
+.sensitive-data-selection ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sensitive-data-selection li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.sensitive-data-selection li:hover {
+    background-color: #f3f4f6;
+}
+
+.sensitive-data-selection input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.sensitive-data-selection label {
+    color: #555;
+    font-size: 18px;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+.sensitive-data-selection button {
+    margin-top: 20px;
+    background-color: #1e90ff;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.sensitive-data-selection button:hover {
+    background-color: #0f62da;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sensitive-data-selection {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .sensitive-data-selection h3 {
+        font-size: 20px;
+    }
+
+    .sensitive-data-selection li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sensitive-data-selection label {
+        font-size: 16px;
+    }
+
+    .sensitive-data-selection button {
+        width: 100%;
+        padding: 12px;
+    }
+}
