@@ -21,7 +21,7 @@ const LoginPopup = ({ setshowLogin }) => {
     const onSubmitHandler = async (event) => {
         event.preventDefault();
         try {
-          const url = currState === "Sign Up" ? 'http://localhost:4000/api/user/register' : 'http://localhost:4000/api/user/login';
+          const url = currState === "Sign Up" ? 'https://maskmyinfo-backend.onrender.com/api/user/register' : 'http://localhost:4000/api/user/login';
 
             const response = await axios.post(url, data);
             if (currState === "Login") {
